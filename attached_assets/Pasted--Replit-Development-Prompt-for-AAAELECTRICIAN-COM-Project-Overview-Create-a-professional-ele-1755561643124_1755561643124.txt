@@ -1,0 +1,491 @@
+# Replit Development Prompt for AAAELECTRICIAN.COM
+
+## Project Overview
+Create a professional electrician website with 60+ service pages (30 residential + 30 commercial), optimized for SEO, local search, and Google AdSense integration. The website should be fast, mobile-responsive, and conversion-focused.
+
+## Technical Requirements
+
+### Tech Stack
+- **Frontend**: React.js with Next.js for SSR/SSG
+- **Styling**: Tailwind CSS for responsive design
+- **SEO**: Next.js built-in SEO features + react-helmet-async
+- **Forms**: React Hook Form with validation
+- **Analytics**: Google Analytics 4 integration
+- **AdSense**: Google AdSense responsive ad units
+- **Schema**: JSON-LD structured data
+- **Performance**: Image optimization, lazy loading, code splitting
+
+### Project Structure
+```
+aaaelectrician/
+├── public/
+│   ├── images/
+│   ├── icons/
+│   ├── sitemap.xml
+│   └── robots.txt
+├── src/
+│   ├── components/
+│   │   ├── Layout/
+│   │   ├── SEO/
+│   │   ├── AdSense/
+│   │   ├── Forms/
+│   │   └── UI/
+│   ├── pages/
+│   │   ├── residential/
+│   │   ├── commercial/
+│   │   └── [dynamic pages]
+│   ├── data/
+│   ├── utils/
+│   └── styles/
+├── package.json
+└── next.config.js
+```
+
+## Multi-State Implementation Strategy
+
+### Geographic Coverage
+- **50 States**: Complete nationwide coverage
+- **300+ Major Cities**: 3-10 cities per state based on population
+- **Dynamic Location Pages**: Auto-generated from location data
+- **State-Specific Content**: Local codes, licensing, regulations per state
+
+### URL Structure for Geographic Pages
+```
+/[state]-electrician-services (State overview page)
+/[state]/[city]-electrician (City-specific landing page)
+/[state]/[city]/[service] (Service + Location combination)
+```
+
+### Location Data Structure
+```typescript
+// data/locations.ts
+export interface Location {
+  state: string;
+  stateCode: string;
+  cities: City[];
+  electricalCodes: string[];
+  licensingInfo: string;
+  permitRequirements: string[];
+}
+
+export interface City {
+  name: string;
+  slug: string;
+  population: number;
+  coordinates: [number, number];
+  serviceAreas: string[];
+  emergencyZones: string[];
+}
+
+export const locations: Location[] = [
+  {
+    state: "Alabama",
+    stateCode: "AL",
+    electricalCodes: ["Alabama Electrical Code", "NEC 2020"],
+    licensingInfo: "Alabama Electrical Contractors Board License Required",
+    permitRequirements: ["Residential Permit", "Commercial Permit"],
+    cities: [
+      { name: "Birmingham", slug: "birmingham", population: 200733, coordinates: [33.5186, -86.8104], serviceAreas: ["Jefferson County", "Shelby County"], emergencyZones: ["Zone 1", "Zone 2"] },
+      // ... more cities
+    ]
+  },
+  // ... all 50 states
+];
+```
+
+### Dynamic Page Generation
+```typescript
+// Generate state pages
+export async function generateStaticParams() {
+  const statePaths = locations.map(location => ({
+    state: location.state.toLowerCase().replace(' ', '-')
+  }));
+  
+  const cityPaths = locations.flatMap(location =>
+    location.cities.map(city => ({
+      state: location.state.toLowerCase().replace(' ', '-'),
+      city: city.slug
+    }))
+  );
+  
+  const servicePaths = locations.flatMap(location =>
+    location.cities.flatMap(city =>
+      services.map(service => ({
+        state: location.state.toLowerCase().replace(' ', '-'),
+        city: city.slug,
+        service: service.slug
+      }))
+    )
+  );
+  
+  return [...statePaths, ...cityPaths, ...servicePaths];
+}
+```
+
+### 1. Initialize Next.js Project
+```bash
+npx create-next-app@latest aaaelectrician --typescript --tailwind --eslint --app
+cd aaaelectrician
+npm install @next/bundle-analyzer react-helmet-async react-hook-form
+```
+
+### 2. Core Components to Build
+
+#### SEO Component
+```typescript
+// components/SEO/SEOHead.tsx
+interface SEOProps {
+  title: string;
+  description: string;
+  keywords?: string;
+  canonical?: string;
+  schema?: object;
+  city?: string;
+  service?: string;
+}
+```
+
+#### AdSense Integration
+```typescript
+// components/AdSense/AdUnit.tsx
+interface AdUnitProps {
+  slot: string;
+  format: 'rectangle' | 'leaderboard' | 'banner' | 'responsive';
+  className?: string;
+}
+```
+
+#### Layout Component
+```typescript
+// components/Layout/Layout.tsx
+- Header with navigation, phone number, CTA
+- Footer with NAP, service links, social media
+- Breadcrumb navigation
+- Mobile-responsive hamburger menu
+- Sticky contact bar for mobile
+```
+
+### 3. Page Templates to Create
+
+#### Service Page Template
+```typescript
+// components/Templates/ServicePage.tsx
+interface ServicePageProps {
+  service: {
+    title: string;
+    description: string;
+    benefits: string[];
+    process: string[];
+    faqs: FAQ[];
+    relatedServices: string[];
+    city: string;
+    category: 'residential' | 'commercial';
+  }
+}
+```
+
+### 4. Data Structure
+
+#### Services Data
+```typescript
+// data/services.ts
+export interface Service {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+  category: 'residential' | 'commercial';
+  overview: string;
+  benefits: string[];
+  process: ProcessStep[];
+  faqs: FAQ[];
+  relatedServices: string[];
+  schema: ServiceSchema;
+}
+
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface ProcessStep {
+  step: number;
+  title: string;
+  description: string;
+}
+```
+
+### 5. Required Features Implementation
+
+#### Navigation Menu
+- **Desktop**: Horizontal menu with dropdowns for services
+- **Mobile**: Hamburger menu with collapsible service categories
+- **Sticky header** with contact information
+- **CTA buttons**: "Get Quote" and "Call Now" prominently displayed
+
+#### Contact Forms
+- **Quote Request Form**: Name, phone, email, service type, description
+- **Emergency Service Form**: Streamlined for urgent requests
+- **Validation**: Real-time validation with error messaging
+- **Integration**: Form submissions to email/CRM system
+
+#### AdSense Placements
+```typescript
+// Strategic ad placements for maximum revenue
+const adPlacements = {
+  header: { slot: 'XXXXXXXXXX', format: 'leaderboard' },
+  sidebar: { slot: 'XXXXXXXXXX', format: 'rectangle' },
+  inContent: { slot: 'XXXXXXXXXX', format: 'rectangle' },
+  footer: { slot: 'XXXXXXXXXX', format: 'leaderboard' },
+  mobile: { slot: 'XXXXXXXXXX', format: 'banner' }
+};
+```
+
+### 6. SEO Implementation Requirements
+
+#### Page Structure
+```html
+<!-- Every page must include -->
+<title>[Service] in [City], [State] | AAA Electrician</title>
+<meta name="description" content="...">
+<meta name="keywords" content="...">
+<link rel="canonical" href="...">
+<meta property="og:title" content="...">
+<meta property="og:description" content="...">
+<meta property="og:image" content="...">
+<script type="application/ld+json">{schema}</script>
+```
+
+#### Schema Markup Templates
+```typescript
+// utils/schema.ts
+export const generateLocalBusinessSchema = (data) => ({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "AAA Electrician",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[ADDRESS]",
+    "addressLocality": "[CITY]",
+    "addressRegion": "[STATE]",
+    "postalCode": "[ZIP]"
+  },
+  "telephone": "[PHONE]",
+  "priceRange": "$$",
+  "openingHours": "Mo-Su 00:00-24:00"
+});
+```
+
+### 7. Content Strategy Implementation
+
+#### Homepage Requirements
+- **Hero section**: "Licensed Electrician in [City]" with prominent CTA
+- **Services overview**: Grid of residential and commercial services
+- **Trust signals**: Years in business, licensing, insurance info
+- **Customer reviews**: Display recent positive reviews
+- **Service areas**: Map or list of covered cities
+- **Emergency service**: 24/7 availability prominently displayed
+
+#### Service Page Template Structure
+1. **Hero Section** (H1 with service + city)
+2. **Service Overview** (200 words with keywords)
+3. **AdSense Rectangle** (300x250)
+4. **Benefits Section** (Why choose our service)
+5. **Process Section** (Step-by-step how we work)
+6. **FAQ Section** (Common questions with schema markup)
+7. **Related Services** (Internal linking)
+8. **Contact CTA** (Get quote form)
+
+### 8. Performance Optimization
+
+#### Image Optimization
+```typescript
+// next.config.js
+module.exports = {
+  images: {
+    domains: ['example.com'],
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+  },
+}
+```
+
+#### Code Splitting
+- Lazy load components below the fold
+- Dynamic imports for non-critical features
+- Optimize bundle size with webpack analyzer
+
+### 9. Local SEO Features
+
+#### Service Area Pages
+- Create individual pages for each service area/city
+- Include local electrical codes and permit information
+- Local customer testimonials and case studies
+
+#### NAP Consistency
+```typescript
+// data/businessInfo.ts
+export const businessInfo = {
+  name: "AAA Electrician",
+  address: "[FULL ADDRESS]",
+  phone: "[PHONE NUMBER]",
+  email: "[EMAIL]",
+  hours: "24/7 Emergency Service Available",
+  license: "[LICENSE NUMBER]",
+  insurance: "[INSURANCE INFO]"
+};
+```
+
+### 10. Mobile Optimization Requirements
+
+#### Responsive Design
+- Mobile-first approach with Tailwind CSS
+- Touch-friendly buttons and navigation
+- Optimized forms for mobile input
+- Fast loading on mobile networks
+
+#### Mobile AdSense Strategy
+- Sticky mobile banner (320x50) at top
+- In-content rectangles (300x250) between sections
+- Native ad integration that matches site design
+- Avoid intrusive interstitials that hurt UX
+
+### 11. Analytics and Tracking Setup
+
+#### Google Analytics 4
+```typescript
+// utils/analytics.ts
+export const trackEvent = (eventName: string, parameters: object) => {
+  gtag('event', eventName, parameters);
+};
+
+// Track important events:
+// - Phone number clicks
+// - Quote form submissions
+// - Service page views
+// - AdSense clicks
+```
+
+### Massive Scale Content Strategy
+
+#### Automated Content Generation
+```typescript
+// Generate unique content for each location
+export const generateLocationContent = (service: Service, location: Location, city: City) => {
+  return {
+    heroContent: `Professional ${service.title} in ${city.name}, ${location.state}. AAA Electrician provides licensed electrical services with same-day availability and 24/7 emergency response.`,
+    
+    localInfo: `Our ${city.name} electricians are fully licensed by the ${location.licensingInfo} and comply with ${location.electricalCodes.join(', ')}. We serve ${city.serviceAreas.join(', ')} and surrounding areas.`,
+    
+    serviceProcess: generateLocalizedProcess(service, location, city),
+    
+    faqs: generateLocalFAQs(service, location, city),
+    
+    emergencyInfo: `24/7 emergency electrical service available in ${city.name}. Our electricians serve emergency zones: ${city.emergencyZones.join(', ')}.`
+  };
+};
+```
+
+#### State-Specific Compliance Content
+```typescript
+// Each state page includes specific regulations
+const stateCompliance = {
+  alabama: {
+    licensingBoard: "Alabama Electrical Contractors Board",
+    codes: ["Alabama Electrical Code", "NEC 2020"],
+    permits: "Permit required for all electrical work over $50",
+    inspections: "Required within 24 hours of completion"
+  },
+  // ... all 50 states
+};
+```
+
+### Sitemap Generation for Scale
+```typescript
+// Generate massive sitemap with all location combinations
+export const generateSitemap = () => {
+  const urls = [];
+  
+  // State pages
+  locations.forEach(location => {
+    urls.push(`https://aaaelectrician.com/${location.state.toLowerCase().replace(' ', '-')}-electrician-services`);
+  });
+  
+  // City pages  
+  locations.forEach(location => {
+    location.cities.forEach(city => {
+      urls.push(`https://aaaelectrician.com/${location.state.toLowerCase().replace(' ', '-')}/${city.slug}-electrician`);
+    });
+  });
+  
+  // Service + City combinations (18,000+ pages)
+  locations.forEach(location => {
+    location.cities.forEach(city => {
+      services.forEach(service => {
+        urls.push(`https://aaaelectrician.com/${location.state.toLowerCase().replace(' ', '-')}/${city.slug}/${service.slug}`);
+      });
+    });
+  });
+  
+  return urls;
+};
+```
+
+### Performance Optimization for Scale
+```typescript
+// Optimize for thousands of pages
+const optimizations = {
+  staticGeneration: "Pre-generate top 1000 pages, ISR for others",
+  caching: "Aggressive CDN caching for location pages",
+  lazyLoading: "Lazy load non-critical location content",
+  imageOptimization: "WebP images with city-specific alt text",
+  bundleSplitting: "Split by geographic regions"
+};
+```
+
+### 13. Testing Requirements
+
+#### Performance Testing
+- Lighthouse scores: 90+ for all metrics
+- Core Web Vitals optimization
+- Mobile pagespeed optimization
+
+#### SEO Testing
+- Meta tags validation
+- Schema markup testing
+- Mobile-friendly test
+- Local SEO audit
+
+### 14. Deployment Configuration
+
+#### Vercel/Netlify Setup
+- Environment variables for AdSense publisher ID
+- Build optimization for static generation
+- CDN configuration for images
+- Form handling with serverless functions
+
+## Specific Page Creation Instructions
+
+### Generate All 60 Service Pages
+Use the services data array to automatically generate:
+- 30 residential service pages with local SEO optimization
+- 30 commercial service pages with industry-specific content
+- Each page with unique meta tags, content, and schema markup
+- Internal linking structure between related services
+
+### AdSense Integration Best Practices
+- Use responsive ad units that adapt to screen size
+- Place ads where they don't disrupt user experience
+- Match ad styling to website design for better CTR
+- Implement lazy loading for ads below the fold
+- A/B test ad placements for optimal revenue
+
+### Local SEO Content Strategy
+- Include city name in every page title and H1
+- Create unique content for each service + city combination
+- Add local electrical codes and permit requirements
+- Include service area maps and coverage information
+- Customer testimonials with reviewer location
+
+This comprehensive setup will create a professional electrician website optimized for search engines, local visibility, and AdSense revenue while maintaining excellent user experience across all devices.
