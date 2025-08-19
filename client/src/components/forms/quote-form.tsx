@@ -55,7 +55,7 @@ export default function QuoteForm({ service, location }: QuoteFormProps) {
           </p>
           <Button
             onClick={() => trackEvent('phone_call', 'quote_form', 'urgent_call')}
-            className="bg-orange-600 hover:bg-orange-700"
+            className="bg-orange-600 hover:bg-orange-700 text-white"
           >
             <Phone className="w-4 h-4 mr-2" />
             Need Urgent Service? Call Now
@@ -170,7 +170,7 @@ export default function QuoteForm({ service, location }: QuoteFormProps) {
 
           <Button 
             type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
             disabled={isSubmitting}
           >
             {isSubmitting ? (

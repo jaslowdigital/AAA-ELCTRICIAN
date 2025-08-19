@@ -75,7 +75,7 @@ export default function ResidentialServices() {
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full" onClick={handleCallClick}>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={handleCallClick}>
                     <Phone className="w-4 h-4 mr-2" />
                     Get Quote
                   </Button>
@@ -138,7 +138,7 @@ export default function ResidentialServices() {
             <p className="text-red-700 mb-6">
               Don't wait when electrical safety is at risk. Our emergency electricians respond within 1 hour.
             </p>
-            <Button size="lg" className="bg-red-600 hover:bg-red-700" onClick={handleCallClick}>
+            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white" onClick={handleCallClick}>
               <Phone className="w-5 h-5 mr-2" />
               Emergency Service: (800) AAA-ELEC
             </Button>
@@ -156,7 +156,7 @@ export default function ResidentialServices() {
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-orange-600 hover:bg-orange-700"
+              className="bg-orange-600 hover:bg-orange-700 text-white"
               onClick={handleCallClick}
             >
               <Phone className="w-5 h-5 mr-2" />

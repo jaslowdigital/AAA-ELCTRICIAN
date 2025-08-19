@@ -121,7 +121,7 @@ export default function Contact() {
                 Don't wait! Electrical emergencies require immediate attention. 
                 Our emergency electricians are available 24/7.
               </p>
-              <Button className="bg-red-600 hover:bg-red-700" onClick={handleCallClick}>
+              <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={handleCallClick}>
                 <Phone className="w-4 h-4 mr-2" />
                 Emergency Service Now
               </Button>
@@ -218,7 +218,7 @@ export default function Contact() {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                     <MessageSquare className="w-4 h-4 mr-2" />
                     Get My Free Estimate
                   </Button>

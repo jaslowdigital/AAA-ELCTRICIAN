@@ -31,7 +31,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-4 justify-center mb-12">
               <Button 
                 size="lg" 
-                className="bg-orange-600 hover:bg-orange-700 text-lg px-8 py-4"
+                className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-4"
                 onClick={handleCallClick}
               >
                 <Phone className="w-5 h-5 mr-2" />
@@ -110,7 +110,7 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full" onClick={handleCallClick}>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={handleCallClick}>
                     Get Quote
                   </Button>
                 </CardContent>
@@ -247,7 +247,7 @@ export default function Home() {
             </p>
             <Button 
               size="lg" 
-              className="bg-white text-red-600 hover:bg-gray-100 text-lg px-8 py-4"
+              className="bg-white text-red-600 hover:bg-gray-100 hover:text-red-700 text-lg px-8 py-4"
               onClick={handleCallClick}
             >
               <Phone className="w-5 h-5 mr-2" />

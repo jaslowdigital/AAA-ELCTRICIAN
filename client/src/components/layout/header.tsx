@@ -61,7 +61,7 @@ export default function Header() {
 
           {/* Call Button */}
           <Button 
-            className="hidden md:flex bg-orange-600 hover:bg-orange-700"
+            className="hidden md:flex bg-orange-600 hover:bg-orange-700 text-white"
             onClick={handleCallClick}
           >
             <Phone className="w-4 h-4 mr-2" />
@@ -98,7 +98,7 @@ export default function Header() {
                 </Link>
               ))}
               <Button 
-                className="bg-orange-600 hover:bg-orange-700 w-full mt-4"
+                className="bg-orange-600 hover:bg-orange-700 text-white w-full mt-4"
                 onClick={handleCallClick}
               >
                 <Phone className="w-4 h-4 mr-2" />
