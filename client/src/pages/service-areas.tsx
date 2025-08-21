@@ -5,6 +5,7 @@ import { MapPin, Phone, Clock, Users, Star } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 import { STATES, MAJOR_CITIES } from '@/data/locations';
 import { Link } from 'wouter';
+import { HeaderBannerAd, InContentAd } from '@/components/ads/adsense-display';
 
 export default function ServiceAreas() {
   const handleCallClick = () => {
@@ -42,6 +43,11 @@ export default function ServiceAreas() {
               <span className="text-gray-600">Local Expertise</span>
             </div>
           </div>
+        </div>
+
+        {/* Top Banner Ad */}
+        <div className="mb-16">
+          <HeaderBannerAd className="mx-auto max-w-4xl" />
         </div>
 
         {/* Major Cities */}
@@ -102,6 +108,11 @@ export default function ServiceAreas() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Mid-Content Ad */}
+          <div className="mb-12">
+            <InContentAd className="mx-auto max-w-2xl" />
           </div>
         </div>
 

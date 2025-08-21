@@ -6,6 +6,7 @@ import { trackEvent } from '@/lib/analytics';
 import QuoteForm from '@/components/forms/quote-form';
 import { RESIDENTIAL_SERVICES, COMMERCIAL_SERVICES } from '@/data/services';
 import { MAJOR_CITIES } from '@/data/locations';
+import { HeaderBannerAd, InContentAd } from '@/components/ads/adsense-display';
 
 export default function Home() {
   const handleCallClick = () => {
@@ -68,6 +69,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Top Banner Ad */}
+      <section className="py-4 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <HeaderBannerAd className="mx-auto max-w-4xl" />
+        </div>
+      </section>
+
       {/* Services Overview */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -116,6 +124,11 @@ export default function Home() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* In-Content Ad */}
+          <div className="mb-12">
+            <InContentAd className="mx-auto max-w-2xl" />
           </div>
 
           <div className="text-center">
@@ -254,6 +267,13 @@ export default function Home() {
               Emergency Service: (800) AAA-ELEC
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Footer Banner Ad */}
+      <section className="py-4 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <InContentAd className="mx-auto max-w-4xl" />
         </div>
       </section>
     </div>
